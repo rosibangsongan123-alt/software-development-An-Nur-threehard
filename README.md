@@ -1,7 +1,7 @@
-# TREEHARD - REKAPITULASI AN-NUR
+# THREEHARD - REKAPITULASI AN-NUR
 
 ## Nama Kelompok: 
-PROJECT TREEHARD AN-NUR  - Kelompok 3
+PROJECT THREEHARD AN-NUR  - Kelompok 3
 
 ## Nama Anggota:
 1. Mochamad Rosi Almida- Project Manager
