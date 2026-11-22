@@ -33,8 +33,11 @@
                 <span class="fs-3 fw-bold tracking-widest text-dark" style="letter-spacing: 1px;">AN-NUR</span>
             </div>
 
-            <!-- Form Login -->
-            <form action="dashboardK.php" method="POST">
+            <!-- Form Login: dikirim ke POST /api/login (Issue #6), bukan ke file .php statis -->
+            <form id="formLogin" method="POST" novalidate>
+
+                <!-- Pesan error dari API -->
+                <div id="alertLogin" class="alert alert-danger py-2 px-3 mb-3 d-none" style="font-size: 13px;" role="alert"></div>
                 
                 <!-- Input Email -->
                 <div class="mb-3">
@@ -94,6 +97,56 @@
             password.setAttribute('type', type);
             toggleIcon.classList.toggle('bi-eye');
             toggleIcon.classList.toggle('bi-eye-slash');
+        });
+
+        // ---- Submit ke POST /api/login (Backend Issue #6) ----
+        const form = document.querySelector('#formLogin');
+        const alertBox = document.querySelector('#alertLogin');
+        const btnMasuk = form.querySelector('button[type="submit"]');
+
+        function tampilkanPesan(pesan) {
+            alertBox.textContent = pesan;
+            alertBox.classList.remove('d-none');
+        }
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            alertBox.classList.add('d-none');
+            btnMasuk.disabled = true;
+            btnMasuk.textContent = 'Memproses...';
+
+            try {
+                const respons = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: JSON.stringify({
+                        email: document.querySelector('#email').value,
+                        password: document.querySelector('#password').value,
+                        remember: document.querySelector('#rememberMe').checked,
+                    }),
+                });
+
+                const hasil = await respons.json();
+
+                if (!respons.ok || hasil.success !== true) {
+                    tampilkanPesan(hasil.message || 'Login gagal. Coba lagi.');
+                    return;
+                }
+
+                // Token disimpan di localStorage, dipakai lagi sebagai header Authorization.
+                localStorage.setItem('annur_token', hasil.data.token);
+                localStorage.setItem('annur_user', JSON.stringify(hasil.data.user));
+                window.location.href = hasil.data.user.redirect_to;
+            } catch (error) {
+                tampilkanPesan('Tidak dapat menghubungi server. Periksa koneksi lalu coba lagi.');
+            } finally {
+                btnMasuk.disabled = false;
+                btnMasuk.textContent = 'Masuk Sekarang';
+            }
         });
     </script>
 </body>
