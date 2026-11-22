@@ -23,3 +23,7 @@ Route::view('/login', 'auth.login')->name('login');
 // Dashboard Owner. Nama view masih 'dasboard' mengikuti nama file dari FE,
 // dirapikan setelah FE memperbaiki penamaan file.
 Route::view('/owner/dashboard', 'owner.dasboard')->name('owner.dashboard');
+
+// Kelola Cabang (Issue #7). Data tabel diambil lewat API /api/branches
+// memakai Bearer token dari localStorage setelah login.
+Route::view('/owner/cabang', 'owner.kelola_cabang')->name('owner.cabang');

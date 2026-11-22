@@ -82,33 +82,37 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : 'minggu';
 
             <!-- Menu Kelola Owner (4 Kotak Rapi) -->
             <div class="row g-3 mb-4">
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-4 col-lg">
                     <a href="kelola_produk.php" class="wf-box-solid p-3 p-lg-4 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm h-100 text-decoration-none text-dark bg-white" style="min-height: 130px;">
                         <i class="bi bi-box-seam fs-1 mb-2" style="color: var(--gold-primary);"></i>
                         <span class="fw-bold" style="font-size: 14px;">Kelola Produk</span>
                     </a>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-4 col-lg">
                     <a href="kelola_akun.php" class="wf-box-solid p-3 p-lg-4 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm h-100 text-decoration-none text-dark bg-white" style="min-height: 130px;">
                         <i class="bi bi-people-fill fs-1 mb-2" style="color: var(--gold-primary);"></i>
                         <span class="fw-bold" style="font-size: 14px;">Kelola Akun</span>
                     </a>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-4 col-lg">
                     <a href="kelola_barcode.php" class="wf-box-solid p-3 p-lg-4 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm h-100 text-decoration-none text-dark bg-white" style="min-height: 130px;">
                         <i class="bi bi-upc-scan fs-1 mb-2" style="color: var(--gold-primary);"></i>
                         <span class="fw-bold" style="font-size: 14px;">Kelola Barcode</span>
                     </a>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-4 col-lg">
                     <a href="total_omset.php" class="wf-box-solid p-3 p-lg-4 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm h-100 text-decoration-none text-dark bg-white" style="min-height: 130px;">
                         <i class="bi bi-wallet2 fs-1 mb-2" style="color: var(--gold-primary);"></i>
                         <span class="fw-bold" style="font-size: 14px;">Kelola Omset</span>
                     </a>
                 </div>
+            <div class="col-6 col-md-4 col-lg">
+                    <a href="{{ route('owner.cabang') }}" class="wf-box-solid p-3 p-lg-4 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm h-100 text-decoration-none text-dark bg-white" style="min-height: 130px;">
+                        <i class="bi bi-shop fs-1 mb-2" style="color: var(--gold-primary);"></i>
+                        <span class="fw-bold" style="font-size: 14px;">Kelola Cabang</span>
+                    </a>
+                </div>
             </div>
-
-            <!-- Grafik Penjualan dengan Filter -->
             <div class="wf-box-solid p-4 mb-3 bg-white shadow-sm">
                 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
                     <div>

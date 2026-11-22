@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BranchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,4 +25,15 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::get('/me', [AuthController::class, 'me'])->name('api.me');
+
+    /*
+    | Issue #7 — CRUD Cabang.
+    |   GET    /api/branches          daftar (pagination: ?page, ?per_page, ?search, ?is_active)
+    |   POST   /api/branches          tambah            (Owner)
+    |   GET    /api/branches/{id}     detail
+    |   PUT    /api/branches/{id}     ganti penuh       (Owner)
+    |   PATCH  /api/branches/{id}     ubah sebagian     (Owner)
+    |   DELETE /api/branches/{id}     hapus             (Owner; ?force=1 bila masih ada user)
+    */
+    Route::apiResource('branches', BranchController::class);
 });
