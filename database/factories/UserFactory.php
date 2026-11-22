@@ -29,6 +29,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => User::ROLE_KASIR,
+            'is_active' => true,
             'remember_token' => Str::random(10),
         ];
     }
@@ -40,6 +42,38 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Akun Owner: akses penuh data master & laporan.
+     */
+    public function owner(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_OWNER,
+            'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Akun Kasir: hanya halaman transaksi.
+     */
+    public function kasir(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_KASIR,
+            'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Akun dinonaktifkan: tidak boleh login (Issue #6).
+     */
+    public function nonaktif(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_active' => false,
         ]);
     }
 }

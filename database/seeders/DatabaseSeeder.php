@@ -15,11 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Akun Owner untuk uji login (Issue #6). Password diganti setelah go-live.
+        User::factory()->owner()->create([
+            'name' => 'Owner An-Nur',
+            'email' => 'owner@annur.test',
+            'password' => 'password',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Contoh Kasir di kantor pusat.
+        User::factory()->kasir()->create([
+            'name' => 'Kasir Pusat',
+            'email' => 'kasir@annur.test',
+            'password' => 'password',
         ]);
     }
 }
