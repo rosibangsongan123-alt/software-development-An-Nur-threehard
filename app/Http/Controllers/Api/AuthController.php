@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * Auth API (Issue #6): POST /api/login, POST /api/logout, GET /api/me.
@@ -56,7 +55,7 @@ class AuthController extends Controller
         $expiresAt = now()->addDays($ttlDays);
 
         $token = $user->createToken(
-            name: 'api-'.Str::limit((string) $request->userAgent(), 60, ''),
+            name: $this->tokenName((string) $request->userAgent()),
             abilities: ['*'],
             expiresAt: $expiresAt,
         )->plainTextToken;
@@ -92,6 +91,17 @@ class AuthController extends Controller
             message: 'Data user berhasil diambil.',
             data: ['user' => new UserResource($request->user())],
         );
+    }
+
+    /**
+     * Nama token dari User-Agent, dipotong manual pakai substr supaya tidak
+     * bergantung fungsi mbstring (kadang tidak aktif di PHP server XAMPP).
+     */
+    private function tokenName(string $userAgent): string
+    {
+        $clean = trim(preg_replace('/\s+/', ' ', $userAgent)) ?: 'unknown';
+
+        return 'api-'.substr($clean, 0, 60);
     }
 
     private function success(string $message, array $data = [], int $status = 200): JsonResponse

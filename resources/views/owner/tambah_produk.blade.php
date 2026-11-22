@@ -16,7 +16,7 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Custom Gold & White Luxury CSS -->
-    <link rel="stylesheet" href="../style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=<?php echo time(); ?>">
 </head>
 <body class="min-vh-100 m-0">
     <!-- Pembungkus utama dibuat transparan penuh agar background body terlihat -->
@@ -30,7 +30,7 @@
                 </a>
                 <div class="d-flex align-items-center gap-2">
                     <div class="d-flex align-items-center justify-content-center overflow-hidden" style="width: 44px; height: 44px;">
-                        <img src="../aset/logo.png" alt="Logo AN-NUR" class="w-100 h-100 object-fit-contain">
+                        <img src="{{ asset('aset/logo.png') }}" alt="Logo AN-NUR" class="w-100 h-100 object-fit-contain">
                     </div>
                     <div class="lh-xs">
                         <span class="text-uppercase fw-semibold text-muted d-block" style="font-size: 10px; letter-spacing: 1px;">Toko Sepatu</span>

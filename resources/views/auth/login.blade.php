@@ -16,7 +16,7 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=<?php echo time(); ?>">
 </head>
 <body class="min-vh-100 d-flex align-items-center justify-content-center m-0">
 
@@ -27,7 +27,7 @@
             <!-- Logo & Title -->
             <div class="d-flex flex-column align-items-center text-center mb-4">
                 <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 overflow-hidden shadow-sm bg-white" style="width: 150px; height: 150px; border: 2px solid var(--gold-border);">
-                    <img src="aset/logo.png" alt="Logo Toko Sepatu AN-NUR" class="img-fluid w-100 h-100 object-fit-cover">
+                    <img src="{{ asset('aset/logo.png') }}" alt="Logo Toko Sepatu AN-NUR" class="img-fluid w-100 h-100 object-fit-cover">
                 </div>
                 <span class="text-uppercase fw-bold tracking-widest text-muted" style="font-size: 14px; letter-spacing: 2px;">Toko Sepatu</span>
                 <span class="fs-3 fw-bold tracking-widest text-dark" style="letter-spacing: 1px;">AN-NUR</span>
