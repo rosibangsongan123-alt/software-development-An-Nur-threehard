@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Route;
 | route-nya belum ada. Ganti ke route Laravel saat integrasi.
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Root: langsung ke halaman login, bukan halaman bawaan Laravel.
+Route::get('/', fn () => redirect()->route('login'));
 
 // Halaman login — form-nya POST ke /api/login (Issue #6).
 Route::view('/login', 'auth.login')->name('login');
