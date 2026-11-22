@@ -86,8 +86,56 @@ Link navigasi di `resources/views/owner/*` masih menunjuk file statis mockup
 link itu mati. Perlu diganti saat integrasi.
 Catatan penamaan: `dasboard.blade.php` dan `dashboardK.php` seharusnya `dashboard`.
 
+### Issue #7 — CRUD Cabang (`/api/branches`) — SELESAI
+
+**Skema & migrasi**
+- `2026_11_22_070000_create_branches_table.php` → tabel `branches`
+  (`name` unik, `address`, `phone` nullable, `is_active` default true).
+- `2026_11_22_071000_add_branch_id_to_users_table.php` → `users.branch_id`
+  nullable + foreign key ke `branches` (`nullOnDelete`). Owner tanpa cabang,
+  Kasir terikat satu cabang.
+
+**Endpoint** (semua butuh `Authorization: Bearer`)
+
+| Method | Path | Akses | Keterangan |
+| --- | --- | --- | --- |
+| GET | `/api/branches` | Owner & Kasir | daftar + paging |
+| POST | `/api/branches` | Owner | tambah, `201` |
+| GET | `/api/branches/{id}` | Owner & Kasir | detail |
+| PUT | `/api/branches/{id}` | Owner | ganti penuh (`name` + `address` wajib) |
+| PATCH | `/api/branches/{id}` | Owner | ubah sebagian |
+| DELETE | `/api/branches/{id}` | Owner | hapus, `?force=1` bila masih ada user |
+
+Query daftar: `page`, `per_page` (1–100, default 15), `search` (nama/alamat),
+`is_active` (0/1), `with_inactive=1`. Default hanya cabang aktif.
+
+`data` pada daftar:
+
+```json
+{ "branches": [ { "id": 1, "name": "An-Nur Pusat", "address": "...", "phone": "...",
+                  "is_active": true, "users_count": 1, "created_at": "...", "updated_at": "..." } ],
+  "meta": { "current_page": 1, "last_page": 1, "per_page": 15, "total": 2 } }
+```
+
+Kode status: `200` sukses · `201` dibuat · `401` tanpa/ token mati ·
+`403` Kasir coba menulis · `404` id tidak ada · `409` cabang masih dipakai user ·
+`422` validasi (pesan Indonesia).
+
+**Aturan yang perlu diketahui FE**
+- Kasir hanya boleh `GET`. Tombol tambah/ubah/hapus disembunyikan untuk role kasir.
+- `is_active: false` menyembunyikan cabang dari daftar default (soft-hide, data tetap ada).
+- Hapus cabang yang masih punya user ditolak `409`; FE bisa menawarkan
+  `DELETE /api/branches/{id}?force=1` (user-nya dilepas, `branch_id` jadi `null`).
+- `branch_id` dan `branch` (objek) ikut di `UserResource` saat relasinya di-load.
+
+**Verifikasi**
+- `tests/Feature/Api/BranchApiTest.php` → 15 test hijau.
+  Jalankan: `php artisan test --filter=BranchApiTest`
+- Uji HTTP nyata (`php artisan serve` + curl): login owner, list, search, create,
+  duplikat nama, validasi kosong, show, PUT, PATCH, 404, delete, hapus dengan
+  `force`, serta kasir ditolak `403`. Semua sesuai tabel di atas.
+- Seeder menambah 2 cabang contoh; `kasir@annur.test` terikat ke An-Nur Pusat.
+
 ### Lanjutan Tahap 1 (belum dikerjakan)
-- Issue #7 — CRUD Cabang `/api/branches` (tabel `branches` dibuat di sini,
-  lalu `users.branch_id` ditambahkan sebagai foreign key).
 - Issue #8 — CRUD Produk & Varian `/api/products`, `/api/product-variants`.
 - Issue #9 — CRUD User `/api/users` (kolom `role` & `is_active` sudah siap).
