@@ -27,3 +27,8 @@ Route::view('/owner/dashboard', 'owner.dasboard')->name('owner.dashboard');
 // Kelola Cabang (Issue #7). Data tabel diambil lewat API /api/branches
 // memakai Bearer token dari localStorage setelah login.
 Route::view('/owner/cabang', 'owner.kelola_cabang')->name('owner.cabang');
+
+// Kelola Produk (Issue #8). Data produk + varian diambil lewat API
+// /api/products dan /api/product-variants memakai Bearer token
+// dari localStorage setelah login.
+Route::view('/owner/produk', 'owner.kelola_produk')->name('owner.produk');

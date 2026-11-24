@@ -172,7 +172,7 @@
                     <i class="bi bi-grid-1x2-fill fs-5"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="kelola_produk.php" class="nav-link-wf">
+                <a href="{{ route('owner.produk') }}" class="nav-link-wf">
                     <i class="bi bi-box-seam fs-5"></i>
                     <span>Kelola Produk</span>
                 </a>
