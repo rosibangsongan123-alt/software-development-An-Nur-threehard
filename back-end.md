@@ -136,6 +136,52 @@ Kode status: `200` sukses · `201` dibuat · `401` tanpa/ token mati ·
   `force`, serta kasir ditolak `403`. Semua sesuai tabel di atas.
 - Seeder menambah 2 cabang contoh; `kasir@annur.test` terikat ke An-Nur Pusat.
 
+### Issue #8 — CRUD Produk & Varian (`/api/products`, `/api/product-variants`) — SELESAI
+
+**Skema & migrasi**
+- `2026_11_23_080000_create_products_table.php` → tabel `products` (master/induk):
+  `name` unik, `description`, `category`, `photo_path` nullable, `is_active` default true.
+  Harga & stok TIDAK di sini.
+- `2026_11_23_081000_create_product_variants_table.php` → tabel `product_variants`:
+  `product_id` (FK ke `products`, `cascadeOnDelete`), `sku` unik, `size`, `color`,
+  `price`, `stock` default 0, `branch_id` nullable (FK ke `branches`, `nullOnDelete`),
+  `is_active`. Satu produk punya banyak varian; SKU/harga/stok hidup di varian.
+
+**Endpoint** (semua butuh `Authorization: Bearer ***
+
+| Method | Path | Akses | Keterangan |
+| --- | --- | --- | --- |
+| GET | `/api/products` | Owner & Kasir | daftar + paging + `variants_count` |
+| POST | `/api/products` | Owner | tambah, `201` |
+| GET | `/api/products/{id}` | Owner & Kasir | detail, `?with_variants=1` ikut bawa varian |
+| PUT / PATCH | `/api/products/{id}` | Owner | ganti penuh / ubah sebagian |
+| DELETE | `/api/products/{id}` | Owner | hapus, `?force=1` bila masih ada varian |
+| GET | `/api/product-variants` | Owner & Kasir | daftar + paging |
+| POST | `/api/product-variants` | Owner | tambah, `201` |
+| GET | `/api/product-variants/{id}` | Owner & Kasir | detail |
+| PUT / PATCH | `/api/product-variants/{id}` | Owner | ganti penuh / ubah sebagian (mis. stok saja) |
+| DELETE | `/api/product-variants/{id}` | Owner | hapus |
+
+Query: `page`, `per_page` (1–100, default 15), `search`, `is_active`, `with_inactive=1`;
+produk tambah `category` + `with_variants=1`; varian tambah `product_id`, `branch_id`,
+`low_stock=1` (stok ≤ 5). Default hanya yang aktif.
+
+Envelope sama seperti #6/#7. Kode status: `200` · `201` · `401` tanpa token ·
+`403` Kasir menulis · `404` · `409` produk masih punya varian · `422` validasi.
+
+**Aturan untuk FE**
+- Kasir hanya `GET`; sembunyikan tombol tambah/ubah/hapus untuk role kasir.
+- Harga & stok dibaca dari varian, bukan produk.
+- `price`/`stock`/`product_id`/`branch_id` boleh string dari form, jadi integer di server;
+  harga & stok tidak boleh minus.
+- Varian membawa `product` dan `branch` (ada `branch.name`) saat relasinya di-load.
+- Hapus produk ber-varian ditolak `409`; tawarkan `?force=1` (varian ikut terhapus).
+
+**Verifikasi**
+- `tests/Feature/Api/ProductApiTest.php` → 4 test, 98 assertion, hijau.
+  `php artisan test --filter=ProductApiTest`
+- Sekalian: `ProductVariantController` diubah ke `load(['product','branch'])`
+  (nama cabang tadinya tidak terkirim) + `vendor/bin/pint` di file-file #8.
+
 ### Lanjutan Tahap 1 (belum dikerjakan)
-- Issue #8 — CRUD Produk & Varian `/api/products`, `/api/product-variants`.
 - Issue #9 — CRUD User `/api/users` (kolom `role` & `is_active` sudah siap).

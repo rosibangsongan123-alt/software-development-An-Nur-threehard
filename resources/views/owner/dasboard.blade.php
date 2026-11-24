@@ -83,7 +83,7 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : 'minggu';
             <!-- Menu Kelola Owner (4 Kotak Rapi) -->
             <div class="row g-3 mb-4">
                 <div class="col-6 col-md-4 col-lg">
-                    <a href="kelola_produk.php" class="wf-box-solid p-3 p-lg-4 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm h-100 text-decoration-none text-dark bg-white" style="min-height: 130px;">
+                    <a href="{{ route('owner.produk') }}" class="wf-box-solid p-3 p-lg-4 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm h-100 text-decoration-none text-dark bg-white" style="min-height: 130px;">
                         <i class="bi bi-box-seam fs-1 mb-2" style="color: var(--gold-primary);"></i>
                         <span class="fw-bold" style="font-size: 14px;">Kelola Produk</span>
                     </a>
@@ -172,7 +172,7 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : 'minggu';
                     <i class="bi bi-grid-1x2-fill fs-5"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="kelola_produk.php" class="nav-link-wf">
+                <a href="{{ route('owner.produk') }}" class="nav-link-wf">
                     <i class="bi bi-box-seam fs-5"></i>
                     <span>Kelola Produk</span>
                 </a>

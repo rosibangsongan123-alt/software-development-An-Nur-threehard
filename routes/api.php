@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BranchController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProductVariantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,4 +38,27 @@ Route::middleware('auth:sanctum')->group(function (): void {
     |   DELETE /api/branches/{id}     hapus             (Owner; ?force=1 bila masih ada user)
     */
     Route::apiResource('branches', BranchController::class);
+
+    /*
+    | Issue #8 — CRUD Produk & Varian.
+    |   GET    /api/products                 daftar (?page, ?per_page, ?search, ?category,
+    |                                            ?is_active, ?with_inactive=1, ?with_variants=1)
+    |   POST   /api/products                 tambah          (Owner)
+    |   GET    /api/products/{id}            detail (+ ?with_variants=1 ikut bawa variannya)
+    |   PUT    /api/products/{id}            ganti penuh     (Owner)
+    |   PATCH  /api/products/{id}            ubah sebagian    (Owner)
+    |   DELETE /api/products/{id}            hapus            (Owner; ?force=1 bila masih ada varian)
+    |
+    |   GET    /api/product-variants         daftar varian (?product_id, ?branch_id, ?search,
+    |                                            ?low_stock=1, ?is_active, ?with_inactive=1)
+    |   POST   /api/product-variants         tambah          (Owner)
+    |   GET    /api/product-variants/{id}    detail
+    |   PUT    /api/product-variants/{id}    ganti penuh     (Owner)
+    |   PATCH  /api/product-variants/{id}    ubah sebagian    (Owner; mis. stok saja)
+    |   DELETE /api/product-variants/{id}    hapus            (Owner)
+    |
+    | Kasir hanya boleh GET; tulis/hapus dibalas 403 oleh controller.
+    */
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('product-variants', ProductVariantController::class);
 });
